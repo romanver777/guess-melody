@@ -34,7 +34,9 @@ export default () => {
             `<div class="main-answer-wrapper">
                     <input class="main-answer-r" type="radio" id="answer-${option.id}" name="answer" value="val-${option.id}"/>
                     <label class="main-answer" for="answer-${option.id}">
-                        <img class="main-answer-preview" src=${option.src} alt=${option.title} width="134" height="134">
+                        <div class="main-answer-img-wrap">
+                            <img class="main-answer-preview" src=${option.src} alt=${option.title}>
+                        </div>
                         ${option.title}
                     </label>
                 </div>`).join('') }
