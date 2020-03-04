@@ -10,6 +10,11 @@ $preview-spacing: 11px;
   }
 }
 
+.main-wrap{
+  margin-top: 10px;
+  text-align: center;
+}
+
 .main-player {
   height: 55px;
   margin-bottom: 80px;
@@ -43,26 +48,31 @@ $preview-spacing: 11px;
 }
 
 .main-answer:hover {
-  .main-answer-preview {
+  .main-answer-img-wrap {
     border-color: $color-orange;
   }
 }
 
 .main-answer:active {
-  .main-answer-preview {
+  .main-answer-img-wrap {
     border-color: red;
   }
 }
 
-.main-answer-preview {
-  background: $color-beige;
+.main-answer-img-wrap{
+  background: #000;
   border: solid 5px $color-text-dark;
   border-radius: $preview-size;
   box-sizing: border-box;
-  height: $preview-size;
-  margin-bottom: $preview-spacing;
   overflow: hidden;
+  height: $preview-size;
   width: $preview-size;
+  margin-bottom: $preview-spacing;
+}
+.main-answer-preview {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 @import "genre";

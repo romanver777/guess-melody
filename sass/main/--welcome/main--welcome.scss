@@ -3,7 +3,7 @@
  */
 
 .main--welcome {
-  padding-top: 395px;
+  padding-top: 370px;
 
   .text {
     text-align: center;
@@ -27,6 +27,7 @@
   text-indent: -100em;
   transform-origin: center;
   width: 0;
+  cursor: pointer;
 }
 
 .main-play:hover {
