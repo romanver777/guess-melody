@@ -2,8 +2,9 @@ import {getElemFromTemplate, renderElement} from '../utils';
 import gameArtistScreen from './game-artist';
 import {level} from '../data/data';
 
-const welcomeTemplate = (state) =>
-    `<section class="main main--welcome">
+export default () => {
+    const welcomeTemplate = (state) =>
+        `<section class="main main--welcome">
         <section class="logo" title="Угадай мелодию">
             <h1>Угадай мелодию</h1>
         </section>
@@ -12,9 +13,10 @@ const welcomeTemplate = (state) =>
         <p class="text main-text">${state.description}</p>
      </section>`;
 
-const welcomeScreen = getElemFromTemplate(welcomeTemplate(level.welcome));
-const playButton = welcomeScreen.querySelector('.main-play');
+    const welcomeScreen = getElemFromTemplate(welcomeTemplate(level.welcome));
+    const playButton = welcomeScreen.querySelector('.main-play');
 
-playButton.addEventListener('click', () => renderElement(gameArtistScreen));
+    playButton.addEventListener('click', () => renderElement( gameArtistScreen() ));
 
-export default welcomeScreen;
+    return welcomeScreen;
+}

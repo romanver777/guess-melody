@@ -4,6 +4,58 @@ export const initialState = Object.freeze({
     time: 5
 });
 
+const tracks = [
+    {
+        id: 0,
+        title: 'BORNS',
+        src: '../tracks/blue-madonna.mp3',
+        imgSrc: '../img/tracks/borns.jpg',
+        genre: 'Инди-поп'
+    },
+    {
+        id: 1,
+        title: 'The Doors',
+        src: '../tracks/blue-sunday.mp3',
+        imgSrc: '../img/tracks/thedoors.jpg',
+        genre: 'Психоделический рок'
+    },
+    {
+        id: 2,
+        title: 'Team Sleep',
+        src: '../tracks/delorian.mp3',
+        imgSrc: '../img/tracks/team-sleep.jpg',
+        genre: 'Дрим-поп'
+    },
+    {
+        id: 3,
+        title: '10 FT. Ganja Plant',
+        src: '../tracks/fist-of-yuen.mp3',
+        imgSrc: '../img/tracks/10ft.jpg',
+        genre: 'Рэгги'
+    },
+    {
+        id: 4,
+        title: '68',
+        src: '../tracks/track5e.mp3',
+        imgSrc: '../img/tracks/68.jpg',
+        genre: 'Нойз-рок'
+    },
+    {
+        id: 5,
+        title: 'Portishead',
+        src: '../tracks/nylon-smile.mp3',
+        imgSrc: '../img/tracks/portishead.jpg',
+        genre: 'Трип-хоп'
+    },
+    {
+        id: 6,
+        title: 'Ramona Falls',
+        src: '../tracks/boy-ant.mp3',
+        imgSrc: '../img/tracks/ramona.jpg',
+        genre: 'Инди-рок'
+    }
+];
+
 export const level = Object.freeze({
     welcome: {
         title: 'Правила игры',
@@ -11,44 +63,50 @@ export const level = Object.freeze({
     },
     artist: {
         title: 'Кто исполняет эту песню?',
-        answers: [
+        options: [
+            {
+                id: 0,
+                title: 'BORNS',
+                src: 'img/artist/borns.jpg'
+            },
             {
                 id: 1,
-                title: 'Пелагея',
-                imgSrc: 'http://placehold.it/134x134'
+                title: 'The Doors',
+                src: 'img/artist/thedoors.jpg'
             },
             {
                 id: 2,
-                title: 'Краснознаменная дивизия имени моей бабушки',
-                imgSrc: 'http://placehold.it/134x134'
-            },
-            {
-                id: 3,
-                title: 'Lorde',
-                imgSrc: 'http://placehold.it/134x134'
+                title: 'Team Sleep',
+                src: 'img/artist/team-sleep.jpg'
             }
-        ]
+        ],
+        answer: {
+            id: 2
+        }
     },
     genre: {
         title: 'Выберите инди-рок треки',
-        answers: [
+        options: [
             {
                 id: 0,
-                trackSrc: ''
+                src: ''
             },
             {
                 id: 1,
-                trackSrc: ''
+                src: ''
             },
             {
                 id: 2,
-                trackSrc: ''
+                src: ''
             },
             {
                 id: 3,
-                trackSrc: ''
+                src: ''
             }
-        ]
+        ],
+        answer: {
+            id: [0, 3]
+        }
     },
     result: {
         success: {
