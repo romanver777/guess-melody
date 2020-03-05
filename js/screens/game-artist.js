@@ -1,24 +1,31 @@
 import {getElemFromTemplate, renderElement} from '../utils';
 import gameGenreScreen from './game-genre';
-import {initialState, level} from '../data/data';
+import resultScreen from './result';
+import {level} from '../data/data';
 import timerTempl from './parts/timer-templ';
 
-export default () => {
-    const mistake = `<img class="main-mistake" src="img/wrong-answer.png" width="35" height="49">`;
+export default (initialState) => {
+    const mistake = (mistakes) => {
 
-    const gameArtistTemplate = (state) =>
+        if (mistakes) {
+
+            return `
+                <div class="main-mistakes">
+                    ${new Array(mistakes)
+                    .fill(`<img class="main-mistake" src="img/wrong-answer.png" width="35" height="49">`)
+                    .join('')}
+                </div>`
+        }
+    };
+
+    const gameArtistTemplate = (levelState) =>
         `<section class="main main--level main--level-artist">
         
         ${timerTempl()}
-      
-        <div class="main-mistakes">
-            ${ new Array(initialState.mistakes)
-            .fill(mistake)
-            .join('') }
-        </div>
+        ${mistake(initialState.mistakes)}
     
         <div class="main-wrap">
-          <h2 class="title main-title">${state.title}</h2>
+          <h2 class="title main-title">${levelState.title}</h2>
           <div class="player-wrapper">
             <div class="player">
               <audio></audio>
@@ -29,7 +36,7 @@ export default () => {
             </div>
           </div>
           <form class="main-list">
-            ${ state.options.map((option) =>
+            ${ levelState.options.map((option) =>
 
             `<div class="main-answer-wrapper">
                     <input class="main-answer-r" type="radio" id="answer-${option.id}" name="answer" value="val-${option.id}"/>
@@ -44,12 +51,32 @@ export default () => {
         </div>
     </section>`;
 
-    const gameArtistScreen = getElemFromTemplate(gameArtistTemplate(level.artist));
+    const gameArtistScreen = getElemFromTemplate(gameArtistTemplate(level[initialState.level]));
     const answers = gameArtistScreen.querySelectorAll('.main-answer-preview');
 
     for (let answer of answers) {
 
-        answer.addEventListener('click', () => renderElement( gameGenreScreen() ));
+        answer.addEventListener('click', () => {
+
+            if (initialState.mistakes < 2) {
+
+                renderElement(resultScreen(Object.assign({}, initialState, {
+                    level: 'failTries'
+                })));
+
+            } else {
+
+                if (initialState.screensNumber > 1) {
+
+                    renderElement(gameGenreScreen(Object.assign({}, initialState, {
+                        level: level[initialState.level].next,
+                        screensNumber: initialState.screensNumber - 1,
+                        mistakes: initialState.mistakes - 1
+                    })));
+
+                }
+            }
+        });
     }
 
     return gameArtistScreen;

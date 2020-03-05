@@ -1,14 +1,13 @@
 import {getElemFromTemplate, renderElement} from '../utils';
-import resultSuccessScreen from './result-success';
-import failTimeScreen from './fail-time';
-import failTriesScreen from './fail-tries';
-import {initialState, level} from '../data/data';
+import gameArtistScreen from './game-artist';
+import resultScreen from './result';
+import {level} from '../data/data';
 import timerTempl from './parts/timer-templ';
 
-export default () => {
+export default (initialState) => {
     const mistake = `<img class="main-mistake" src="img/wrong-answer.png" width="35" height="49">`;
 
-    const gameGenreTemplate = (state) =>
+    const gameGenreTemplate = (levelState) =>
         `<section class="main main--level main--level-genre">
 
         ${timerTempl()}
@@ -19,10 +18,10 @@ export default () => {
                 .join('')}
         </div>
         <div class="main-wrap">
-          <h2 class="title">${state.title}</h2>
+          <h2 class="title">${levelState.title}</h2>
           <form class="genre">
             
-            ${ state.options.map((option) =>
+            ${ levelState.options.map((option) =>
     
                 `<div class="genre-answer">
                     <div class="player-wrapper">
@@ -44,29 +43,41 @@ export default () => {
         </div>
   </section>`;
 
-    const gameGenreScreen = getElemFromTemplate(gameGenreTemplate(level.genre));
+    const gameGenreScreen = getElemFromTemplate(gameGenreTemplate(level[initialState.level]));
     const form = gameGenreScreen.querySelector('.genre');
     const answerButton = gameGenreScreen.querySelector('.genre-answer-send');
     const answerList = gameGenreScreen.querySelectorAll('input[name=answer]');
 
-    form.addEventListener('submit', () => {
+    form.addEventListener('submit', (e) => {
 
-        let number = Math.floor(Math.random() * 11);
-
+        e.preventDefault();
         form.reset();
         answerButton.disabled = true;
 
-        if (number < 4) {
+        if (initialState.mistakes < 2) {
 
-            renderElement(resultSuccessScreen());
-        }
-        else if (number > 3 && number < 8) {
+            renderElement(resultScreen(Object.assign({}, initialState, {
+                level: 'failTries'
+            })));
+        } else {
 
-            renderElement(failTriesScreen());
-        }
-        else {
+            if (initialState.screensNumber > 1) {
 
-            renderElement(failTimeScreen());
+                renderElement(gameArtistScreen(Object.assign({}, initialState, {
+                    level: level[initialState.level].next,
+                    screensNumber: initialState.screensNumber - 1,
+                    mistakes: initialState.mistakes - 1
+                })));
+
+            } else {
+
+                if (initialState.mistakes > 0 && initialState.time > 0) {
+
+                    renderElement(resultScreen(Object.assign({}, initialState, {
+                        level: 'success'
+                    })));
+                }
+            }
         }
     });
 
