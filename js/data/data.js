@@ -1,7 +1,9 @@
 
 export const initialState = Object.freeze({
+    level: 'welcome',
     mistakes: 3,
-    time: 5
+    time: 5,
+    screensNumber: 6
 });
 
 const tracks = [
@@ -59,7 +61,8 @@ const tracks = [
 export const level = Object.freeze({
     welcome: {
         title: 'Правила игры',
-        description: 'Правила просты&nbsp;— за&nbsp;5 минут ответить<br>на все вопросы. Ошибиться можно 3 раза.<br>Удачи!'
+        description: 'Правила просты&nbsp;— за&nbsp;5 минут ответить<br>на все вопросы. Ошибиться можно 3 раза.<br>Удачи!',
+        next: 'artist'
     },
     artist: {
         title: 'Кто исполняет эту песню?',
@@ -82,7 +85,8 @@ export const level = Object.freeze({
         ],
         answer: {
             id: 2
-        }
+        },
+        next: 'genre'
     },
     genre: {
         title: 'Выберите инди-рок треки',
@@ -106,23 +110,23 @@ export const level = Object.freeze({
         ],
         answer: {
             id: [0, 3]
-        }
+        },
+        next: 'artist'
     },
-    result: {
-        success: {
-            title: 'Вы настоящий меломан!',
-            stat: 'За 3 минуты и 25 секунд<br>вы набрали 12 баллов (8 быстрых)<br>совершив 3 ошибки',
-            comparison: 'Вы заняли 2 место из 10. Это&nbsp;лучше чем у&nbsp;80%&nbsp;игроков'
-        },
-        failTime: {
-            title: 'Увы и ах!',
-            stat: 'Время вышло!<br>Вы не успели отгадать все<br> мелодии',
-            comparison: ''
-        },
-        failTries: {
-            title: 'Какая жалость!',
-            stat: 'У вас закончились все попытки.<br>Ничего, повезёт в следующий раз!',
-            comparison: ''
-        }
+    success: {
+        title: 'Вы настоящий меломан!',
+        stat: 'За 3 минуты и 25 секунд<br>вы набрали 12 баллов (8 быстрых)<br>совершив 3 ошибки',
+        comparison: 'Вы заняли 2 место из 10. Это&nbsp;лучше чем у&nbsp;80%&nbsp;игроков'
+    },
+    failTime: {
+        title: 'Увы и ах!',
+        stat: 'Время вышло!<br>Вы не успели отгадать все<br> мелодии',
+        comparison: ''
+    },
+    failTries: {
+        title: 'Какая жалость!',
+        stat: 'У вас закончились все попытки.<br>Ничего, повезёт в следующий раз!',
+        comparison: ''
     }
+
 });
