@@ -6,55 +6,55 @@ export const initialState = Object.freeze({
     screensNumber: 6
 });
 
-const tracks = [
+export const tracks = [
     {
         id: 0,
         title: 'BORNS',
         src: '../tracks/blue-madonna.mp3',
-        imgSrc: '../img/tracks/borns.jpg',
-        genre: 'Инди-поп'
+        imgSrc: '../img/artist/borns.jpg',
+        genre: 'инди-поп'
     },
     {
         id: 1,
         title: 'The Doors',
         src: '../tracks/blue-sunday.mp3',
-        imgSrc: '../img/tracks/thedoors.jpg',
-        genre: 'Психоделический рок'
+        imgSrc: '../img/artist/thedoors.jpg',
+        genre: 'психо-рок'
     },
     {
         id: 2,
         title: 'Team Sleep',
         src: '../tracks/delorian.mp3',
-        imgSrc: '../img/tracks/team-sleep.jpg',
-        genre: 'Дрим-поп'
+        imgSrc: '../img/artist/team-sleep.jpg',
+        genre: 'дрим-поп'
     },
     {
         id: 3,
         title: '10 FT. Ganja Plant',
         src: '../tracks/fist-of-yuen.mp3',
-        imgSrc: '../img/tracks/10ft.jpg',
-        genre: 'Рэгги'
+        imgSrc: '../img/artist/10ft.jpg',
+        genre: 'рэгги'
     },
     {
         id: 4,
         title: '68',
         src: '../tracks/track5e.mp3',
-        imgSrc: '../img/tracks/68.jpg',
-        genre: 'Нойз-рок'
+        imgSrc: '../img/artist/68.jpg',
+        genre: 'нойз-рок'
     },
     {
         id: 5,
         title: 'Portishead',
         src: '../tracks/nylon-smile.mp3',
-        imgSrc: '../img/tracks/portishead.jpg',
-        genre: 'Трип-хоп'
+        imgSrc: '../img/artist/portishead.jpg',
+        genre: 'трип-хоп'
     },
     {
         id: 6,
         title: 'Ramona Falls',
         src: '../tracks/boy-ant.mp3',
-        imgSrc: '../img/tracks/ramona.jpg',
-        genre: 'Инди-рок'
+        imgSrc: '../img/artist/ramona.jpg',
+        genre: 'инди-рок'
     }
 ];
 
@@ -70,17 +70,17 @@ export const level = Object.freeze({
             {
                 id: 0,
                 title: 'BORNS',
-                src: 'img/artist/borns.jpg'
+                imgSrc: 'img/artist/borns.jpg'
             },
             {
                 id: 1,
                 title: 'The Doors',
-                src: 'img/artist/thedoors.jpg'
+                imgSrc: 'img/artist/thedoors.jpg'
             },
             {
                 id: 2,
                 title: 'Team Sleep',
-                src: 'img/artist/team-sleep.jpg'
+                imgSrc: 'img/artist/team-sleep.jpg'
             }
         ],
         answer: {
@@ -109,6 +109,7 @@ export const level = Object.freeze({
             }
         ],
         answer: {
+            genre: '',
             id: [0, 3]
         },
         next: 'artist'
