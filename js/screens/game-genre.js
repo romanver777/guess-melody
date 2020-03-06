@@ -1,10 +1,10 @@
-import {getElemFromTemplate, renderElement} from '../utils';
+import {getElemFromTemplate, renderElement, getRandomNumber, getOptions, getTitleGenre} from '../utils';
 import gameArtistScreen from './game-artist';
 import resultScreen from './result';
-import {level} from '../data/data';
+import {level, tracks} from '../data/data';
 import timerTempl from './parts/timer-templ';
 
-export default (initialState) => {
+export default (initialState, newOptionState) => {
     const mistake = `<img class="main-mistake" src="img/wrong-answer.png" width="35" height="49">`;
 
     const gameGenreTemplate = (levelState) =>
@@ -18,7 +18,7 @@ export default (initialState) => {
                 .join('')}
         </div>
         <div class="main-wrap">
-          <h2 class="title">${levelState.title}</h2>
+          <h2 class="title">${getTitleGenre(levelState.title, levelState.answer.genre)}</h2>
           <form class="genre">
             
             ${ levelState.options.map((option) =>
@@ -43,7 +43,7 @@ export default (initialState) => {
         </div>
   </section>`;
 
-    const gameGenreScreen = getElemFromTemplate(gameGenreTemplate(level[initialState.level]));
+    const gameGenreScreen = getElemFromTemplate(gameGenreTemplate(newOptionState));
     const form = gameGenreScreen.querySelector('.genre');
     const answerButton = gameGenreScreen.querySelector('.genre-answer-send');
     const answerList = gameGenreScreen.querySelectorAll('input[name=answer]');
@@ -67,7 +67,12 @@ export default (initialState) => {
                     level: level[initialState.level].next,
                     screensNumber: initialState.screensNumber - 1,
                     mistakes: initialState.mistakes - 1
-                })));
+                }),
+                    Object.assign({}, level[level[initialState.level].next], {
+                        options: getOptions(3, tracks),
+                        answer: {id: getRandomNumber(0, 3)}
+                    })
+                ));
 
             } else {
 

@@ -1,6 +1,6 @@
-import {getElemFromTemplate, renderElement} from '../utils';
+import {getElemFromTemplate, renderElement, getRandomNumber, getOptions} from '../utils';
 import gameArtistScreen from './game-artist';
-import {level} from '../data/data';
+import {level, tracks} from '../data/data';
 
 export default (initialState) => {
     const welcomeTemplate = (levelState) =>
@@ -18,9 +18,15 @@ export default (initialState) => {
 
     playButton.addEventListener('click', () => {
 
-            renderElement(gameArtistScreen(Object.assign({}, initialState, {
-                level: level[initialState.level].next
-            })));
+            renderElement(gameArtistScreen(
+                Object.assign({}, initialState, {
+                    level: level[initialState.level].next
+                }),
+                Object.assign({}, level[level[initialState.level].next], {
+                    options: getOptions(3, tracks),
+                    answer: {id: getRandomNumber(0, 3)}
+                })
+            ));
     });
 
     return welcomeScreen;
