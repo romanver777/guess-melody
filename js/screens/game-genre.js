@@ -10,7 +10,7 @@ export default (initialState, newOptionState) => {
     const gameGenreTemplate = (levelState) =>
         `<section class="main main--level main--level-genre">
 
-        ${timerTempl()}
+        ${timerTempl(initialState.time)}
         
         <div class="main-mistakes">
             ${new Array(initialState.mistakes)
@@ -35,6 +35,7 @@ export default (initialState, newOptionState) => {
                     </div>
                     <input type="checkbox" name="answer" value="answer-${option.id}" id="a-${option.id}">
                     <label class="genre-answer-check" for="a-${option.id}"></label>
+                    ${option.genre}
                 </div>`
             ).join('')}
             
@@ -47,6 +48,7 @@ export default (initialState, newOptionState) => {
     const form = gameGenreScreen.querySelector('.genre');
     const answerButton = gameGenreScreen.querySelector('.genre-answer-send');
     const answerList = gameGenreScreen.querySelectorAll('input[name=answer]');
+    let checkedElemsArr = [];
 
     form.addEventListener('submit', (e) => {
 
@@ -54,7 +56,26 @@ export default (initialState, newOptionState) => {
         form.reset();
         answerButton.disabled = true;
 
-        if (initialState.mistakes < 2) {
+        let mistake = false;
+        let genreAnswerArr = newOptionState.answer.id;
+
+        if (checkedElemsArr.length !== genreAnswerArr.length) {
+
+            mistake = true;
+            initialState.mistakes--;
+        } else {
+
+            for (let checkEl of checkedElemsArr) {
+
+                if (genreAnswerArr.indexOf(checkEl) < 0 ) {
+
+                    mistake = true;
+                    initialState.mistakes--;
+                }
+            }
+        }
+
+        if (initialState.mistakes < 1) {
 
             renderElement(resultScreen(Object.assign({}, initialState, {
                 level: 'failTries'
@@ -66,9 +87,9 @@ export default (initialState, newOptionState) => {
                 renderElement(gameArtistScreen(Object.assign({}, initialState, {
                     level: level[initialState.level].next,
                     screensNumber: initialState.screensNumber - 1,
-                    mistakes: initialState.mistakes - 1
+                    mistakes: initialState.mistakes
                 }),
-                    Object.assign({}, level[level[initialState.level].next], {
+                    Object.assign({}, level[ level[initialState.level].next ], {
                         options: getOptions(3, tracks),
                         answer: {id: getRandomNumber(0, 3)}
                     })
@@ -76,12 +97,9 @@ export default (initialState, newOptionState) => {
 
             } else {
 
-                if (initialState.mistakes > 0 && initialState.time > 0) {
-
                     renderElement(resultScreen(Object.assign({}, initialState, {
                         level: 'success'
                     })));
-                }
             }
         }
     });
@@ -92,20 +110,24 @@ export default (initialState, newOptionState) => {
 
             if (answer.checked) {
 
+                checkedElemsArr.push(+answer.id.slice('a-'.length));
+            } else {
+
+                for (let i = 0; i < checkedElemsArr.length; i++) {
+
+                    if (checkedElemsArr[i] == +answer.id.slice('a-'.length)) {
+                        checkedElemsArr.splice(i, 1);
+                    }
+                }
+            }
+            if (checkedElemsArr.length) {
+
                 answerButton.disabled = false;
             } else {
 
-                let checkedCount = 0;
-                const list = gameGenreScreen.querySelectorAll('input[name=answer]');
-
-                for (let item of list) {
-
-                    if (item.checked) checkedCount++;
-                }
-                if (checkedCount == 0) answerButton.disabled = true;
+                answerButton.disabled = true;
             }
         });
     }
-
     return gameGenreScreen;
 }
