@@ -3,7 +3,8 @@ export const initialState = Object.freeze({
     level: 'welcome',
     mistakes: 3,
     time: 5,
-    screensNumber: 6
+    screensNumber: 6,
+    score: 0
 });
 
 export const tracks = [
@@ -116,7 +117,7 @@ export const level = Object.freeze({
     },
     success: {
         title: 'Вы настоящий меломан!',
-        stat: 'За 3 минуты и 25 секунд<br>вы набрали 12 баллов (8 быстрых)<br>совершив 3 ошибки',
+        stat: 'За 3 минуты и 25 секунд<br>вы набрали score совершив<br> mistake',
         comparison: 'Вы заняли 2 место из 10. Это&nbsp;лучше чем у&nbsp;80%&nbsp;игроков'
     },
     failTime: {
@@ -131,3 +132,9 @@ export const level = Object.freeze({
     }
 
 });
+
+export const dictionary = {
+
+    score: ['балл', 'балла', 'баллов'],
+    mistake: ['ошибок', 'ошибкy', 'ошибки']
+};

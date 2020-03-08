@@ -1,4 +1,4 @@
-import {getElemFromTemplate, renderElement, getOptions, getArrayAnswerGenre, getRandomNumber} from '../utils';
+import {getElemFromTemplate, renderElement, getOptions, getArrayAnswerGenre, getRandomNumber, getResultStatString} from '../utils';
 import gameGenreScreen from './game-genre';
 import resultScreen from './result';
 import {level, tracks} from '../data/data';
@@ -56,9 +56,14 @@ export default (initialState, newOptionState) => {
     const gameArtistScreen = getElemFromTemplate(gameArtistTemplate(newOptionState));
     const answers = gameArtistScreen.querySelectorAll('.main-answer-preview');
 
+    let time = Date.now();
+
     for (let answer of answers) {
 
         answer.addEventListener('click', (event) => {
+
+            time = (Date.now() - time) / 1000;
+            console.log(time);
 
             let clickedELemId = event.target.id.slice('answerImg-'.length);
             let answerId = newOptionState.options[newOptionState.answer.id].id;
@@ -87,7 +92,8 @@ export default (initialState, newOptionState) => {
                     renderElement(gameGenreScreen(Object.assign({}, initialState, {
                         level: level[initialState.level].next,
                         screensNumber: initialState.screensNumber - 1,
-                        mistakes: initialState.mistakes
+                        mistakes: initialState.mistakes,
+                        score: (time < 10 && !mistake) ? (initialState.score + 2) : (initialState.score + 1)
                     }),
                         Object.assign({}, level[level[initialState.level].next], {
                             options: optionsGenre,
@@ -101,9 +107,19 @@ export default (initialState, newOptionState) => {
 
                 } else {
 
+                    const statStr =  level.success.stat;
+
                     renderElement(resultScreen(Object.assign({}, initialState, {
-                        level: 'success'
-                    })));
+                        level: 'success',
+                        score: initialState.score,
+                        mistakes: initialState.mistakes
+                    }),
+                        Object.assign({}, level.success.stat, {
+                            stat: getResultStatString(statStr,
+                                ['score', 'mistake'],
+                                [initialState.score, 3 - initialState.mistakes])
+                        })
+                    ));
                 }
             }
         });
