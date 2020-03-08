@@ -12,49 +12,49 @@ export const tracks = [
         title: 'BORNS',
         src: '../tracks/blue-madonna.mp3',
         imgSrc: '../img/artist/borns.jpg',
-        genre: 'инди-поп'
+        genre: ['инди-поп', 'дрим-поп', 'инди-рок']
     },
     {
         id: 1,
         title: 'The Doors',
         src: '../tracks/blue-sunday.mp3',
         imgSrc: '../img/artist/thedoors.jpg',
-        genre: 'психо-рок'
+        genre: ['психо-рок', 'инди-рок']
     },
     {
         id: 2,
         title: 'Team Sleep',
         src: '../tracks/delorian.mp3',
         imgSrc: '../img/artist/team-sleep.jpg',
-        genre: 'дрим-поп'
+        genre: ['дрим-поп', 'трип-хоп']
     },
     {
         id: 3,
         title: '10 FT. Ganja Plant',
         src: '../tracks/fist-of-yuen.mp3',
         imgSrc: '../img/artist/10ft.jpg',
-        genre: 'рэгги'
+        genre: ['рэгги']
     },
     {
         id: 4,
         title: '68',
         src: '../tracks/track5e.mp3',
         imgSrc: '../img/artist/68.jpg',
-        genre: 'нойз-рок'
+        genre: ['нойз-рок']
     },
     {
         id: 5,
         title: 'Portishead',
         src: '../tracks/nylon-smile.mp3',
         imgSrc: '../img/artist/portishead.jpg',
-        genre: 'трип-хоп'
+        genre: ['трип-хоп', 'дрим-поп']
     },
     {
         id: 6,
         title: 'Ramona Falls',
         src: '../tracks/boy-ant.mp3',
         imgSrc: '../img/artist/ramona.jpg',
-        genre: 'инди-рок'
+        genre: ['инди-рок']
     }
 ];
 
@@ -89,7 +89,7 @@ export const level = Object.freeze({
         next: 'genre'
     },
     genre: {
-        title: 'Выберите инди-рок треки',
+        title: 'Выберите треки',
         options: [
             {
                 id: 0,

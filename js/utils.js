@@ -16,20 +16,13 @@ export const renderElement = (elem) => {
     app.appendChild(elem);
 };
 
-export const getRandomNumber = (min, max) => {
-
-    let randomNumber = Math.floor(Math.random() * max);
-
-    console.log(randomNumber);
-    return randomNumber;
-
-};
+export const getRandomNumber = (min, max) =>  Math.floor(Math.random() * max);
 
 const shuffle = (number, arr) => {
 
-    for(let i = arr.length - 1; i > 0; i--){
+    for(let i = 0; i < arr.length; i++){
 
-        let j = Math.floor(Math.random() * (i + 1));
+        let j = getRandomNumber(i, arr.length);
         let temp = arr[j];
 
         arr[j] = arr[i];
@@ -41,26 +34,25 @@ const shuffle = (number, arr) => {
 
 export const getOptions = (number, tracks) => shuffle(number, tracks);
 
-export const getArrayAnswerGenre = (tracksObj, genreStr) => {
+export let getArrayAnswerGenre = (tracksObj, genreStr) => {
 
     let arr = [];
 
     for (let track of tracksObj) {
 
-        if (track.genre == genreStr) {
+        if (track.genre.indexOf(genreStr) > -1) {
+
             arr.push(track.id);
-            console.log(' track.genre -',track.genre);
         }
     }
-console.log(arr);
     return arr;
 };
 
-export const getTitleGenre = (currentSrt, insertStr) => {
+export const getTitleGenre = (currentStr, insertStr) => {
 
-    const arr = currentSrt.split(' ');
+    const arr = currentStr.split(' ');
 
-    arr[1] = insertStr;
+    arr.splice(1, 0, insertStr);
 
     return arr.join(' ');
 };

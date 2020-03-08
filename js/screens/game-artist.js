@@ -6,8 +6,6 @@ import timerTempl from './parts/timer-templ';
 
 export default (initialState, newOptionState) => {
 
-    console.log(newOptionState);
-
     const mistake = (mistakes) => {
 
         if (mistakes) {
@@ -46,7 +44,7 @@ export default (initialState, newOptionState) => {
                     <input class="main-answer-r" type="radio" id="answer-${option.id}" name="answer" value="val-${option.id}"/>
                     <label class="main-answer" for="answer-${option.id}">
                         <div class="main-answer-img-wrap">
-                            <img class="main-answer-preview" src=${option.imgSrc} alt="${option.title}">
+                            <img id="answerImg-${option.id}" class="main-answer-preview" src=${option.imgSrc} alt="${option.title}">
                         </div>
                         ${option.title}
                     </label>
@@ -60,9 +58,19 @@ export default (initialState, newOptionState) => {
 
     for (let answer of answers) {
 
-        answer.addEventListener('click', () => {
+        answer.addEventListener('click', (event) => {
 
-            if (initialState.mistakes < 2) {
+            let clickedELemId = event.target.id.slice('answerImg-'.length);
+            let answerId = newOptionState.options[newOptionState.answer.id].id;
+            let mistake = false;
+
+            if (clickedELemId != answerId) {
+
+                mistake = true;
+                initialState.mistakes--;
+            }
+
+            if (initialState.mistakes < 1) {
 
                 renderElement(resultScreen(Object.assign({}, initialState, {
                     level: 'failTries'
@@ -72,25 +80,30 @@ export default (initialState, newOptionState) => {
 
                 if (initialState.screensNumber > 1) {
 
-                    const optionsGenre = getOptions(4, tracks);
-                    const answerGenre = optionsGenre[getRandomNumber(0, 3)].genre;
-console.log('answerGenre-',answerGenre);
+                    let optionsGenre = getOptions(4, tracks);
+                    let answerGenreArr = optionsGenre[getRandomNumber(0, 4)].genre;
+                    let genreState = answerGenreArr[getRandomNumber(0, answerGenreArr.length)];
 
                     renderElement(gameGenreScreen(Object.assign({}, initialState, {
                         level: level[initialState.level].next,
                         screensNumber: initialState.screensNumber - 1,
-                        mistakes: initialState.mistakes - 1
+                        mistakes: initialState.mistakes
                     }),
                         Object.assign({}, level[level[initialState.level].next], {
                             options: optionsGenre,
                             answer: {
-                                genre: answerGenre,
-                                id: getArrayAnswerGenre(optionsGenre, answerGenre)
+                                genre: genreState,
+                                id: getArrayAnswerGenre(optionsGenre, genreState)
                             }
                         })
 
                     ));
 
+                } else {
+
+                    renderElement(resultScreen(Object.assign({}, initialState, {
+                        level: 'success'
+                    })));
                 }
             }
         });

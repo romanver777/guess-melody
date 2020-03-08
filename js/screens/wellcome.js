@@ -20,7 +20,8 @@ export default (initialState) => {
 
             renderElement(gameArtistScreen(
                 Object.assign({}, initialState, {
-                    level: level[initialState.level].next
+                    level: level[initialState.level].next,
+                    screensNumber: initialState.screensNumber
                 }),
                 Object.assign({}, level[level[initialState.level].next], {
                     options: getOptions(3, tracks),
