@@ -1,4 +1,4 @@
-import {getElemFromTemplate, renderElement, getRandomNumber, getOptions, getTitleGenre, getResultStatString} from '../utils';
+import {getElemFromTemplate, renderElement, getRandomNumber, getOptions, getTitleGenre, getResultStatString, startTimer, stopTimer} from '../utils';
 import gameArtistScreen from './game-artist';
 import resultScreen from './result';
 import {level, tracks} from '../data/data';
@@ -48,14 +48,43 @@ export default (initialState, newOptionState) => {
     const form = gameGenreScreen.querySelector('.genre');
     const answerButton = gameGenreScreen.querySelector('.genre-answer-send');
     const answerList = gameGenreScreen.querySelectorAll('input[name=answer]');
+
     let checkedElemsArr = [];
+
+    const timerELemMin = gameGenreScreen.querySelector('.timer-value-mins');
+    const timerElemSec = gameGenreScreen.querySelector('.timer-value-secs');
+    const timerLine = gameGenreScreen.querySelector('.timer-line');
+
+    let observer = new MutationObserver(() => {
+
+        if (timerElemSec.innerHTML == '00' && timerELemMin.innerHTML == '00') {
+
+            let timeOut = setTimeout(() => {
+
+                renderElement(resultScreen(Object.assign({}, initialState, {
+                    level: 'failTime'
+                })));
+
+                observer.disconnect();
+
+                clearTimeout(timeOut);
+                stopTimer();
+
+            }, 500);
+        }
+    });
+    observer.observe(timerElemSec, {childList: true});
 
     let time = Date.now();
 
+    startTimer(initialState.time, timerELemMin, timerElemSec, timerLine);
+
     form.addEventListener('submit', (e) => {
 
-        time = (Date.now() - time) / 1000;
-        console.log(time);
+        time = Math.floor( (Date.now() - time) / 1000 );
+        stopTimer();
+
+        let remainingTime = (initialState.time * 60 - time) / 60;
 
         e.preventDefault();
         form.reset();
@@ -91,6 +120,7 @@ export default (initialState, newOptionState) => {
 
                 renderElement(gameArtistScreen(Object.assign({}, initialState, {
                     level: level[initialState.level].next,
+                    time: remainingTime,
                     screensNumber: initialState.screensNumber - 1,
                     mistakes: initialState.mistakes,
                     score: (time < 10 && !mistake) ? (initialState.score + 2) : (initialState.score + 1)
@@ -112,8 +142,8 @@ export default (initialState, newOptionState) => {
                     }),
                     Object.assign({}, level[initialState.level].stat, {
                         stat: getResultStatString(statStr,
-                            ['score', 'mistake'],
-                            [initialState.score, 3 - initialState.mistakes])
+                            ['score', 'mistake', 'time'],
+                            [initialState.score, 3 - initialState.mistakes, remainingTime])
                     })
                 ));
             }
