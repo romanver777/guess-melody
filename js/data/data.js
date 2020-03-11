@@ -2,7 +2,7 @@
 export const initialState = Object.freeze({
     level: 'welcome',
     mistakes: 3,
-    time: 5,
+    time: 1,
     screensNumber: 6,
     score: 0
 });
@@ -117,7 +117,7 @@ export const level = Object.freeze({
     },
     success: {
         title: 'Вы настоящий меломан!',
-        stat: 'За 3 минуты и 25 секунд<br>вы набрали score совершив<br> mistake',
+        stat: 'За time <br>вы набрали score совершив<br> mistake',
         comparison: 'Вы заняли 2 место из 10. Это&nbsp;лучше чем у&nbsp;80%&nbsp;игроков'
     },
     failTime: {
@@ -136,5 +136,7 @@ export const level = Object.freeze({
 export const dictionary = {
 
     score: ['балл', 'балла', 'баллов'],
-    mistake: ['ошибок', 'ошибкy', 'ошибки']
+    mistake: ['ошибок', 'ошибкy', 'ошибки'],
+    min: ['минут', 'минуту', 'минуты'],
+    sec: ['секунд', 'секунду', 'секунды']
 };

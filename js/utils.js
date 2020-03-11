@@ -1,4 +1,4 @@
-import  {dictionary} from './data/data';
+import  {initialState, dictionary} from './data/data';
 
 export const getElemFromTemplate = (template) => {
 
@@ -78,8 +78,93 @@ export const getResultStatString = (currentStr, markArr, insertStrArr) => {
             if (insertStrArr[i] > 0 && insertStrArr[i] < 2) str = dictionary.mistake[1];
             if (insertStrArr[i] > 1) str = dictionary.mistake[2];
         }
-        arr[arr.indexOf(markArr[i])] = +insertStrArr[i] + ' ' + str;
+        if (markArr[i] == 'time') {
+
+            let time = initialState.time - insertStrArr[i];
+            let min = getTime(time).minutes;
+            let sec = getTime(time).seconds;
+
+            if (min == 0) min = str = '';
+            if (min == 1) str = dictionary.min[1];
+            if (min > 1) str = dictionary.min[2];
+            if (min > 4) str = dictionary.min[0];
+
+            min = min + ' ' + str;
+
+            let secLastNumber = sec.toString().slice(-1);
+
+            if (secLastNumber == 0 || secLastNumber > 4 && secLastNumber <= 9) str = dictionary.sec[0];
+            if (secLastNumber == 1) str = dictionary.sec[1];
+            if (secLastNumber > 1 && secLastNumber < 5) str = dictionary.sec[2];
+            if (sec > 4 && sec < 21) str = dictionary.sec[0];
+            if (sec == 0) sec = str = '';
+
+            sec = sec + ' ' + str;
+
+            arr[arr.indexOf(markArr[i])] = `${min} ${sec}`;
+        }
+        if (i < markArr.length - 1) {
+            arr[arr.indexOf(markArr[i])] = +insertStrArr[i] + ' ' + str;
+        }
     }
 
     return arr.join(' ');
 };
+
+export const getTime = (min) => {
+
+    let minutes = Math.trunc(min);
+    let seconds = Math.round( (min - minutes) * 60 );
+
+    return {minutes, seconds}
+};
+
+export const convertTimeToString = (time) => {
+
+    if (time.toString().length < 2) time = `0${time}`;
+
+    return time;
+};
+
+let interval;
+
+export const startTimer = (time, timerELemMin, timerElemSec, timerLine) => {
+
+    let minutes = getTime(time).minutes;
+    let seconds = getTime(time).seconds;
+
+    const strokeCircleWidth = 2325;
+    const transitionOption = '1s linear';
+
+    const initialTimerLineShift = strokeCircleWidth / (initialState.time * 60);
+    let currentLinePos = strokeCircleWidth - (strokeCircleWidth * time / initialState.time);
+    let strokeShift = currentLinePos;
+
+    timerLine.style.strokeDasharray = strokeCircleWidth;
+    timerLine.style.transition = transitionOption;
+    timerLine.style.strokeDashoffset = strokeShift;
+
+    interval = setInterval(() => {
+
+        if (seconds == 0)  {
+
+            minutes--;
+            seconds = 60;
+        }
+        if (minutes < 0) {
+
+            clearInterval(interval);
+        } else {
+
+            seconds--;
+            strokeShift += initialTimerLineShift;
+
+            timerELemMin.innerText = convertTimeToString(minutes);
+            timerElemSec.innerText = convertTimeToString(seconds);
+
+            timerLine.style.strokeDashoffset = strokeShift;
+        }
+    }, 1000);
+};
+
+export const stopTimer = () => clearInterval(interval);
