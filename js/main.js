@@ -1,5 +1,4 @@
-import welcomeScreen from './screens/wellcome';
-import {renderElement} from './utils';
-import {initialState} from './data/data';
+import wellcome from './screens/wellcome';
+import {renderViewElement} from './utils';
 
-document.addEventListener('DOMContentLoaded', () => renderElement( welcomeScreen(initialState) ));
+renderViewElement( wellcome() );

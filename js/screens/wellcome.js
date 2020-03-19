@@ -1,34 +1,22 @@
-import {getElemFromTemplate, renderElement, getRandomNumber, getOptions} from '../utils';
-import gameArtistScreen from './game-artist';
-import {level, tracks} from '../data/data';
+import {renderViewElement, renderTimerViewElement} from '../utils';
+import gameArtist from './game-artist';
+import {initialState, level} from '../data/data';
+import WellcomeView from './wellcome-view';
+import timer from '../screens/parts/timer';
 
-export default (initialState) => {
-    const welcomeTemplate = (levelState) =>
-        `<section class="main main--welcome">
-        <section class="logo" title="Угадай мелодию">
-            <h1>Угадай мелодию</h1>
-        </section>
-        <button class="main-play">Начать игру</button>
-        <h2 class="title main-title">${levelState.title}</h2>
-        <p class="text main-text">${levelState.description}</p>
-     </section>`;
 
-    const welcomeScreen = getElemFromTemplate(welcomeTemplate(level[initialState.level]));
-    const playButton = welcomeScreen.querySelector('.main-play');
+const wellcome = new WellcomeView(initialState, level);
 
-    playButton.addEventListener('click', () => {
+wellcome.onStart = () => {
 
-            renderElement(gameArtistScreen(
-                Object.assign({}, initialState, {
-                    level: level[initialState.level].next,
-                    screensNumber: initialState.screensNumber
-                }),
-                Object.assign({}, level[level[initialState.level].next], {
-                    options: getOptions(3, tracks),
-                    answer: {id: getRandomNumber(0, 3)}
-                })
-            ));
+    const nextlevel = level[initialState.level].next;
+    const newState = Object.assign({}, initialState, {
+        level: nextlevel,
+        screensNumber: initialState.screensNumber
     });
 
-    return welcomeScreen;
-}
+    renderViewElement(gameArtist(newState));
+    renderTimerViewElement(timer(newState.time));
+};
+
+export default () => wellcome;

@@ -11,10 +11,26 @@ export const getElemFromTemplate = (template) => {
 
 const app = document.querySelector('.app .main');
 
-export const renderElement = (elem) => {
+export const renderViewElement = (view) => {
 
     app.innerHTML = '';
-    app.appendChild(elem);
+    app.appendChild(view.element);
+};
+
+export const renderTimerViewElement = (view) => {
+
+    if (app.querySelector('#timer')) {
+
+        app.querySelector('#timer').remove();
+    }
+    app.appendChild(view.element);
+};
+export const removeTimerViewElement = () => {
+
+    if (app.querySelector('#timer')) {
+
+        app.querySelector('#timer').remove();
+    }
 };
 
 export const getRandomNumber = (min, max) =>  Math.floor(Math.random() * max);
@@ -34,6 +50,37 @@ const shuffle = (number, arr) => {
 };
 
 export const getOptions = (number, tracks) => shuffle(number, tracks);
+
+export const isMistake = (data, levelState) => {
+
+    let mistake = false;
+
+    if(!Array.isArray(data)) {
+
+        const {id} = data.target;
+        const clickedELemId = id.slice('answerImg-'.length);
+        const answerId = levelState.options[levelState.answer.id].id;
+
+        if (clickedELemId != answerId) mistake = true;
+
+    } else {
+
+        if (data.length !== levelState.answer.id.length) {
+
+            mistake = true;
+        } else {
+
+            for (let elem of data) {
+
+                if (levelState.answer.id.indexOf(elem) < 0) {
+
+                    mistake = true;
+                }
+            }
+        }
+    }
+    return mistake;
+};
 
 export let getArrayAnswerGenre = (tracksObj, genreStr) => {
 
@@ -126,45 +173,21 @@ export const convertTimeToString = (time) => {
     return time;
 };
 
-let interval;
-
-export const startTimer = (time, timerELemMin, timerElemSec, timerLine) => {
+export const tik = (time) => {
 
     let minutes = getTime(time).minutes;
     let seconds = getTime(time).seconds;
 
-    const strokeCircleWidth = 2325;
-    const transitionOption = '1s linear';
+    if (seconds == 0)  {
 
-    const initialTimerLineShift = strokeCircleWidth / (initialState.time * 60);
-    let currentLinePos = strokeCircleWidth - (strokeCircleWidth * time / initialState.time);
-    let strokeShift = currentLinePos;
+        minutes--;
+        seconds = 60;
+    }
+    if (minutes < 0) {
 
-    timerLine.style.strokeDasharray = strokeCircleWidth;
-    timerLine.style.transition = transitionOption;
-    timerLine.style.strokeDashoffset = strokeShift;
+    } else {
 
-    interval = setInterval(() => {
-
-        if (seconds == 0)  {
-
-            minutes--;
-            seconds = 60;
-        }
-        if (minutes < 0) {
-
-            clearInterval(interval);
-        } else {
-
-            seconds--;
-            strokeShift += initialTimerLineShift;
-
-            timerELemMin.innerText = convertTimeToString(minutes);
-            timerElemSec.innerText = convertTimeToString(seconds);
-
-            timerLine.style.strokeDashoffset = strokeShift;
-        }
-    }, 1000);
+        seconds--;
+    }
+    return `${(minutes * 60 + seconds) / 60}`;
 };
-
-export const stopTimer = () => clearInterval(interval);
