@@ -1,5 +1,6 @@
 import AbstractView from './abstract-view';
 import {getTitleGenre} from '../utils';
+import {testMod} from '../data/settings';
 
 const mistake = (mistakes) => {
 
@@ -44,8 +45,10 @@ export default class GameGenreView extends AbstractView {
                                 </div>
                             </div>
                             <input type="checkbox" name="answer" value="answer-${option.id}" id="a-${option.id}">
-                            <label class="genre-answer-check" for="a-${option.id}"></label>
-                            ${option.genre}
+                            <label class="genre-answer-check" for="a-${option.id}"
+                                   ${(testMod && this.level.answer.id.indexOf(option.id) > -1) 
+                                           ? 'style="background-color: red"' : null} 
+                            ></label>
                         </div>`
                     ).join('')}
                     

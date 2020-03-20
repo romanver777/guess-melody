@@ -1,4 +1,5 @@
 import AbstractView from './abstract-view';
+import {testMod} from '../data/settings';
 
 const mistake = (mistakes) => {
 
@@ -40,12 +41,14 @@ export default class GameArtistView extends AbstractView {
             </div>
             <form class="main-list">
             
-                ${ this.level.options.map((option) =>
+                ${ this.level.options.map((option, ind) =>
 
                 `<div class="main-answer-wrapper">
                         <input class="main-answer-r" type="radio" id="answer-${option.id}" name="answer" value="val-${option.id}"/>
                         <label class="main-answer" for="answer-${option.id}">
-                            <div class="main-answer-img-wrap">
+                            <div class="main-answer-img-wrap"
+                                ${(testMod && ind == this.level.answer.id) ? 'style="border-color: red"' : null}
+                            >
                                 <img id="answerImg-${option.id}" class="main-answer-preview" src=${option.imgSrc} alt="${option.title}">
                             </div>
                             ${option.title}
