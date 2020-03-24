@@ -1,10 +1,13 @@
 
 export const initialState = Object.freeze({
-    level: 'welcome',
+    level: 0,
     mistakes: 3,
     time: 1,
     screensNumber: 6,
-    score: 0
+    fastTimeSeconds: 15,
+    fastAnswers: 0,
+    score: 0,
+    question: []
 });
 
 export const tracks = [

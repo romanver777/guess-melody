@@ -2,9 +2,10 @@ import AbstractView from './abstract-view';
 
 export default class ResultView extends AbstractView {
 
-    constructor(state, level) {
+    constructor(level) {
 
-        super(state, level);
+        super();
+        this.level = level;
     }
 
     get template() {

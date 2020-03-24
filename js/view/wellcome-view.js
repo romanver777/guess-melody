@@ -2,11 +2,6 @@ import AbstractView from './abstract-view';
 
 export default class WellcomeView extends AbstractView {
 
-    constructor (state, level) {
-        super(state);
-        this.level = level[state.level];
-    }
-
     get template() {
 
         return (
@@ -15,8 +10,8 @@ export default class WellcomeView extends AbstractView {
                 <h1>Угадай мелодию</h1>
             </section>
             <button class="main-play">Начать игру</button>
-            <h2 class="title main-title">${this.level.title}</h2>
-            <p class="text main-text">${this.level.description}</p>
+            <h2 class="title main-title">Правила игры</h2>
+            <p class="text main-text">Правила просты&nbsp;— за&nbsp;5 минут ответить<br>на все вопросы. Ошибиться можно 3 раза.<br>Удачи!</p>
         </section>`.trim());
     }
 

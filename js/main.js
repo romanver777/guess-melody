@@ -1,4 +1,3 @@
-import wellcome from './screens/wellcome';
-import {renderViewElement} from './utils';
+import App from './app';
 
-renderViewElement( wellcome() );
+App.showWellcome();
