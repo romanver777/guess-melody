@@ -29,16 +29,14 @@ export default class TimerView extends AbstractView {
 
     bind() {
 
-        const radius = 370;
+        const timerLine = this.element.querySelector('.timer-line');
+        const timerValue = this.element.querySelector('.timer-value');
+
+        const radius = timerLine.getAttribute('r');
         const strokeCircleWidth = Math.round(2 * Math.PI * radius);
         const transitionOption = '1s linear';
 
-        const initialTimerLineShift = strokeCircleWidth / (initialState.time * 60);
         let currentLinePos = strokeCircleWidth - (strokeCircleWidth * this.time / initialState.time);
-        let strokeShift = currentLinePos;
-
-        const timerLine = this.element.querySelector('.timer-line');
-        const timerValue = this.element.querySelector('.timer-value');
 
         if ( (this.time * 60) < 6) {
             timerValue.classList.add('timer-value--finished');
@@ -46,7 +44,7 @@ export default class TimerView extends AbstractView {
 
         timerLine.style.strokeDasharray = strokeCircleWidth;
         timerLine.style.transition = transitionOption;
-        timerLine.style.strokeDashoffset = strokeShift;
+        timerLine.style.strokeDashoffset = currentLinePos;
 
     }
 

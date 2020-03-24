@@ -1,6 +1,6 @@
 import {renderViewElement, renderTimerViewElement, tik} from '../../utils';
 import TimerView from './timer-view';
-import result from '../result';
+import result from '../../presenter/result';
 import {initialState} from '../../data/data';
 
 let timeout;

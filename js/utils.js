@@ -25,13 +25,6 @@ export const renderTimerViewElement = (view) => {
     }
     app.appendChild(view.element);
 };
-export const removeTimerViewElement = () => {
-
-    if (app.querySelector('#timer')) {
-
-        app.querySelector('#timer').remove();
-    }
-};
 
 export const getRandomNumber = (min, max) =>  Math.floor(Math.random() * max);
 

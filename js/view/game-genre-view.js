@@ -17,8 +17,10 @@ const mistake = (mistakes) => {
 
 export default class GameGenreView extends AbstractView {
 
-    constructor (state, level) {
-        super(state, level);
+    constructor (model) {
+        super();
+        this.level = model.state.question[model.state.level];
+        this.mistakes = model.state.mistakes;
     }
 
     get template() {
@@ -26,7 +28,7 @@ export default class GameGenreView extends AbstractView {
         return (
             `<section class="main main--level main--level-genre">
 
-                ${mistake(this.state.mistakes)}
+                ${mistake(this.mistakes)}
         
                 <div class="main-wrap">
                   <h2 class="title">${getTitleGenre(this.level.title, this.level.answer.genre)}</h2>
@@ -56,7 +58,6 @@ export default class GameGenreView extends AbstractView {
                   </form>
                 </div>
             </section>`);
-
     }
 
     bind() {
@@ -71,7 +72,19 @@ export default class GameGenreView extends AbstractView {
 
             answer.addEventListener('change', () => {
 
-                this.onChangeAnswers(answer, answerButton, checkedElemsArr);
+                // this.onChangeAnswers(answer, answerButton, checkedElemsArr);
+                if (answer.checked) {
+
+                    checkedElemsArr.push(+answer.id.slice('a-'.length));
+                } else {
+
+                    for (let i = 0; i < checkedElemsArr.length; i++) {
+
+                        if (checkedElemsArr[i] == +answer.id.slice('a-'.length)) {
+                            checkedElemsArr.splice(i, 1);
+                        }
+                    }
+                }
 
                 if(checkedElemsArr.length) {
 
@@ -90,11 +103,8 @@ export default class GameGenreView extends AbstractView {
             form.reset();
             answerButton.disabled = true;
 
-            this.onSubmitAnswers();
+            this.onAnswer(checkedElemsArr);
         }
     }
-
-    onChangeAnswers() {}
-
-    onSubmitAnswers() {}
+    onAnswer() {}
 }

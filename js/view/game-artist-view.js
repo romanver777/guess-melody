@@ -16,17 +16,18 @@ const mistake = (mistakes) => {
 
 export default class GameArtistView extends AbstractView {
 
-    constructor(state, level) {
-        super(state, level);
+    constructor(model) {
+        super();
+        this.level = model.state.question[model.state.level];
+        this.mistakes = model.state.mistakes;
     }
-
     get template() {
 
         return (
             `<section class="main main--level main--level-artist">
         
         
-            ${mistake(this.state.mistakes)}
+            ${mistake(this.mistakes)}
     
             <div class="main-wrap">
                 <h2 class="title main-title">${this.level.title}</h2>
