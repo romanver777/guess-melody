@@ -58,14 +58,14 @@ export const isMistake = (data, levelState) => {
 
     } else {
 
-        if (data.length !== levelState.answer.id.length) {
+        if (data.length != levelState.answer.id.length) {
 
             mistake = true;
         } else {
 
             for (let elem of data) {
 
-                if (levelState.answer.id.indexOf(elem) < 0) {
+                if (levelState.answer.id.indexOf(elem.toString()) < 0) {
 
                     mistake = true;
                 }

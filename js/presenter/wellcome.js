@@ -2,7 +2,7 @@ import {renderViewElement} from '../utils';
 import WellcomeView from '../view/wellcome-view';
 import App from '../app';
 
-class Wellcome {
+export default class Wellcome {
     constructor(state) {
         this.state = state;
         this.view = new WellcomeView();
@@ -14,5 +14,3 @@ class Wellcome {
         this.view.onStart = () => App.showGame();
     }
 }
-
-export default new Wellcome;
