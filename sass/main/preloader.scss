@@ -1,0 +1,12 @@
+// прелоадер
+.animate{
+  transition: 0.5s;
+  animation: rotate 5s linear infinite;
+}
+.fadeout{
+  opacity: 0;
+}
+@keyframes rotate {
+  0%   { transform: rotate(0); }
+  100% { transform: rotate(360deg); }
+}

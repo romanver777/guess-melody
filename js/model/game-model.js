@@ -1,21 +1,21 @@
-import {initialState, level, tracks} from '../data/data';
+import {initialState, level} from '../data/data';
 import {getOptions, getRandomNumber, getArrayAnswerGenre, getResultStatString} from '../utils';
 
 const getLevel = (state, num) => state.question[num];
 
-const quest = () => {
+const quest = (tracks) => {
 
     let arr = new Set();
 
     for(let i = 0; i < initialState.screensNumber; i++) {
 
-        !(i % 2) ? arr.add(artistLevel())
-            : arr.add(genreLevel())
+        !(i % 2) ? arr.add(artistLevel(tracks))
+                 : arr.add(genreLevel(tracks))
     }
     return [...arr];
 };
 
-const artistLevel = () => {
+const artistLevel = (tracks) => {
 
     const numberTracks = 3;
 
@@ -26,7 +26,7 @@ const artistLevel = () => {
     }
 };
 
-const genreLevel = () => {
+const genreLevel = (tracks) => {
 
     const numberTracks = 4;
 
@@ -46,7 +46,8 @@ const genreLevel = () => {
 
 export default class GameModel {
 
-    constructor() {
+    constructor(dataTracks) {
+        this.tracks = dataTracks;
         this.restart();
     }
 
@@ -131,10 +132,9 @@ export default class GameModel {
             return level[name];
         }
     }
-
     restart() {
         this._state = Object.assign({}, initialState, {
-            question: quest()
+            question: quest(this.tracks)
         });
     }
 }

@@ -12,6 +12,7 @@
   justify-content: center;
   position: relative;
   width: 100%;
+  overflow: hidden;
 }
 
 .main-wrap {
@@ -51,3 +52,4 @@
 @import "--welcome/main--welcome";
 @import "timer";
 @import "mistake";
+@import "preloader";
