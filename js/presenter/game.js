@@ -43,13 +43,12 @@ export default class GamePresenter {
         clearInterval(this._timer);
     }
 
+
     init() {
 
         let time = Date.now();
         renderViewElement(this.view);
         this.startGame();
-
-
 
         this.level = this.model.currentLevel();
 
