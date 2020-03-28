@@ -1,5 +1,6 @@
 import AbstractView from './abstract-view';
 import {getTitleGenre} from '../utils';
+import {initPlayer} from '../player';
 import {testMod} from '../data/settings';
 
 const mistake = (mistakes) => {
@@ -8,9 +9,12 @@ const mistake = (mistakes) => {
 
         return (
             `<div class="main-mistakes">
+                ${new Array(3 - mistakes)
+                    .fill(`<img class="main-mistake" src="img/wrong-answer.png" width="35" height="49">`)
+                    .join('')}
                 ${new Array(mistakes)
-                .fill(`<img class="main-mistake" src="img/wrong-answer.png" width="35" height="49">`)
-                .join('')}
+                    .fill(`<img class="main-mistake" src="img/icon-note-active.png" width="35" height="49">`)
+                    .join('')}
              </div>`);
     }
 };
@@ -38,11 +42,13 @@ export default class GameGenreView extends AbstractView {
         
                         `<div class="genre-answer">
                             <div class="player-wrapper">
-                                <div class="player">
-                                    <audio></audio>
-                                    <button class="player-control player-control--play"></button>
+                                <div>
+                                    <audio class="player" id="player-${option.id}" src="${option.src}"></audio>
+                                    <button class="player-control player-control--play" id="player-control-${option.id}"></button>
                                     <div class="player-track">
-                                        <span class="player-status"></span>
+                                        <span class="player-status">
+                                            <progress value='0' max='100' class='progress-bar' id='progress-bar-${option.id}'></progress>
+                                        </span>
                                     </div>
                                 </div>
                             </div>
@@ -64,37 +70,42 @@ export default class GameGenreView extends AbstractView {
 
         const form = this.element.querySelector('.genre');
         const answerButton = this.element.querySelector('.genre-answer-send');
-        const answerList = this.element.querySelectorAll('input[name=answer]');
+        const answerList =[...this.element.querySelectorAll('input[name=answer]')];
+
+        const players = [...this.element.querySelectorAll('.player')];
+        const buttons = [...this.element.querySelectorAll('.player-control')];
 
         let checkedElemsArr = [];
 
-        for (let answer of answerList) {
+        const getCheckedElemsArr = (evt) => {
 
-            answer.addEventListener('change', () => {
+            let answer = evt.target;
 
-                // this.onChangeAnswers(answer, answerButton, checkedElemsArr);
-                if (answer.checked) {
+            if (answer.checked) {
 
-                    checkedElemsArr.push(+answer.id.slice('a-'.length));
-                } else {
+                checkedElemsArr.push(+answer.id.slice('a-'.length));
+            } else {
 
-                    for (let i = 0; i < checkedElemsArr.length; i++) {
+                for (let i = 0; i < checkedElemsArr.length; i++) {
 
-                        if (checkedElemsArr[i] == +answer.id.slice('a-'.length)) {
-                            checkedElemsArr.splice(i, 1);
-                        }
+                    if (checkedElemsArr[i] == +answer.id.slice('a-'.length)) {
+                        checkedElemsArr.splice(i, 1);
                     }
                 }
+            }
 
-                if(checkedElemsArr.length) {
+            if (checkedElemsArr.length) {
 
-                    answerButton.disabled = false;
-                } else {
+                answerButton.disabled = false;
+            } else {
 
-                    answerButton.disabled = true;
-                }
-            });
-        }
+                answerButton.disabled = true;
+            }
+        };
+
+        answerList.forEach((answer) => answer.addEventListener('change', (evt) => getCheckedElemsArr(evt) ) );
+
+        initPlayer(this.element, players, buttons);
 
         form.onsubmit = (evt) => {
 
@@ -106,5 +117,6 @@ export default class GameGenreView extends AbstractView {
             this.onAnswer(checkedElemsArr);
         }
     }
+
     onAnswer() {}
 }

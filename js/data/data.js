@@ -2,8 +2,8 @@
 export const initialState = Object.freeze({
     level: 0,
     mistakes: 3,
-    time: 1,
-    screensNumber: 6,
+    time: 5,
+    screensNumber: 10,
     fastTimeSeconds: 15,
     fastAnswers: 0,
     score: 0,

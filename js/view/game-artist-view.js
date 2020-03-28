@@ -1,4 +1,5 @@
 import AbstractView from './abstract-view';
+import {initPlayer} from '../player';
 import {testMod} from '../data/settings';
 
 const mistake = (mistakes) => {
@@ -7,8 +8,11 @@ const mistake = (mistakes) => {
 
         return (
             `<div class="main-mistakes">
-                ${new Array(mistakes)
+                ${new Array(3 - mistakes)
                     .fill(`<img class="main-mistake" src="img/wrong-answer.png" width="35" height="49">`)
+                    .join('')}
+                ${new Array(mistakes)
+                    .fill(`<img class="main-mistake" src="img/icon-note-active.png" width="35" height="49">`)
                     .join('')}
              </div>`);
     }
@@ -23,6 +27,9 @@ export default class GameArtistView extends AbstractView {
     }
     get template() {
 
+        const url = this.level.options[this.level.answer.id].src;
+        const id = this.level.options[this.level.answer.id].id;
+
         return (
             `<section class="main main--level main--level-artist">
         
@@ -32,11 +39,13 @@ export default class GameArtistView extends AbstractView {
             <div class="main-wrap">
                 <h2 class="title main-title">${this.level.title}</h2>
                 <div class="player-wrapper">
-                    <div class="player">
-                    <audio></audio>
-                    <button class="player-control player-control--pause"></button>
-                    <div class="player-track">
-                        <span class="player-status"></span>
+                    <div class="player-field">
+                        <audio class="player" src="${url}" id="player-${id}"></audio>
+                        <button class="player-control player-control--play" id="player-control-${id}"></button>
+                        <div class="player-track">
+                        <span class="player-status">
+                            <progress value='0' max='100' class='progress-bar' id="progress-bar-${id}"></progress>
+                        </span>
                     </div>
                 </div>
             </div>
@@ -61,13 +70,14 @@ export default class GameArtistView extends AbstractView {
 
     bind() {
 
-        const answers = this.element.querySelectorAll('.main-answer-preview');
+        const answers = [...this.element.querySelectorAll('.main-answer-preview')];
+        const players = [...this.element.querySelectorAll('.player')];
+        const buttons = [...this.element.querySelectorAll('.player-control')];
 
-        for (let answer of answers) {
+        answers.forEach((answer) => answer.addEventListener('click', (evt) => this.onAnswer(evt)) );
 
-            answer.onclick = (evt) => this.onAnswer(evt);
-        }
+        initPlayer(this.element, players, buttons);
     }
 
     onAnswer() {}
-};
+}
