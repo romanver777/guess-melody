@@ -1,9 +1,22 @@
 // player
-export const initPlayer = (viewElement, players, buttons) => {
+export const initPlayer = (viewElement, players, buttons, statusList) => {
 
     let buttonClicked;
     let playerClicked;
     let progressCurrent;
+
+    const playerStr = 'player-';
+    const buttonStr = 'player-control-';
+    const progressStr = 'progress-bar-';
+    const statusStr = 'player-status-';
+
+    const getItem = (insertingSrt, cuttingStr, evt) => {
+
+        let startId = evt.target.id;
+        let finalId = '#' + insertingSrt + startId.slice(cuttingStr.length);
+
+        return viewElement.querySelector(finalId);
+    };
 
     const toggleButtonClass = (button) => {
 
@@ -51,16 +64,8 @@ export const initPlayer = (viewElement, players, buttons) => {
 
         buttonClicked = evt.target;
 
-        const playerStr = 'player-';
-        const buttonStr = 'player-control-';
-        const progressStr = 'progress-bar-';
-
-        let id = evt.target.id;
-        let playerId = '#' + playerStr + id.slice(buttonStr.length);
-        let progressId = '#' + progressStr + id.slice(buttonStr.length);
-
-        playerClicked = viewElement.querySelector(playerId);
-        progressCurrent = viewElement.querySelector(progressId);
+        playerClicked = getItem(playerStr, buttonStr, evt);
+        progressCurrent = getItem(progressStr, buttonStr, evt);
 
         if (players.length > 1) {
             pauseAllExceptThis(playerClicked, buttonClicked);
@@ -89,7 +94,24 @@ export const initPlayer = (viewElement, players, buttons) => {
         }
     };
 
+    const rewind = (evt) => {
+
+        if (playerClicked && !playerClicked.paused && playerClicked == getItem(playerStr, statusStr, evt)) {
+
+            let progressLeftCoord = progressCurrent.getBoundingClientRect().left;
+            let progressWidth = progressCurrent.getBoundingClientRect().right - progressCurrent.getBoundingClientRect().left;
+            let progressValue = evt.pageX - progressLeftCoord;
+            let progressInPers = 100 * progressValue / progressWidth;
+            let timeValue = Math.round(progressInPers / 100 * playerClicked.duration);
+
+            playerClicked.currentTime = timeValue;
+            playerClicked.progressCurrent = timeValue;
+        }
+    };
+
     buttons.forEach( (button) => button.addEventListener('click', (evt) => startPlayer(evt)) );
 
     players.forEach((player) => player.addEventListener('timeupdate', () => updateProgress(playerClicked, progressCurrent, buttonClicked) ) );
+
+    statusList.forEach((status) => status.addEventListener('click', (evt) => rewind(evt)) );
 };

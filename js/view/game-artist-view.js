@@ -43,7 +43,7 @@ export default class GameArtistView extends AbstractView {
                         <audio class="player" src="${url}" id="player-${id}"></audio>
                         <button class="player-control player-control--play" id="player-control-${id}"></button>
                         <div class="player-track">
-                        <span class="player-status">
+                        <span class="player-status" id="player-status-${id}">
                             <progress value='0' max='100' class='progress-bar' id="progress-bar-${id}"></progress>
                         </span>
                     </div>
@@ -73,10 +73,11 @@ export default class GameArtistView extends AbstractView {
         const answers = [...this.element.querySelectorAll('.main-answer-preview')];
         const players = [...this.element.querySelectorAll('.player')];
         const buttons = [...this.element.querySelectorAll('.player-control')];
+        const statusList = [...this.element.querySelectorAll('.player-status')];
 
         answers.forEach((answer) => answer.addEventListener('click', (evt) => this.onAnswer(evt)) );
 
-        initPlayer(this.element, players, buttons);
+        initPlayer(this.element, players, buttons, statusList);
     }
 
     onAnswer() {}

@@ -46,7 +46,7 @@ export default class GameGenreView extends AbstractView {
                                     <audio class="player" id="player-${option.id}" src="${option.src}"></audio>
                                     <button class="player-control player-control--play" id="player-control-${option.id}"></button>
                                     <div class="player-track">
-                                        <span class="player-status">
+                                        <span class="player-status" id="player-status-${option.id}">
                                             <progress value='0' max='100' class='progress-bar' id='progress-bar-${option.id}'></progress>
                                         </span>
                                     </div>
@@ -74,6 +74,7 @@ export default class GameGenreView extends AbstractView {
 
         const players = [...this.element.querySelectorAll('.player')];
         const buttons = [...this.element.querySelectorAll('.player-control')];
+        const statusList = [...this.element.querySelectorAll('.player-status')];
 
         let checkedElemsArr = [];
 
@@ -105,7 +106,7 @@ export default class GameGenreView extends AbstractView {
 
         answerList.forEach((answer) => answer.addEventListener('change', (evt) => getCheckedElemsArr(evt) ) );
 
-        initPlayer(this.element, players, buttons);
+        initPlayer(this.element, players, buttons, statusList);
 
         form.onsubmit = (evt) => {
 
